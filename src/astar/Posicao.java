@@ -1,7 +1,5 @@
 package astar;
 
-import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.ParseException;
-
 import astar.nula.PosicaoNula;
 
 public class Posicao {
@@ -121,10 +119,9 @@ public class Posicao {
 			int coluna = Integer.parseInt(values[1]);
 			return new Posicao(linha, coluna);
 		} catch (Exception e) {
-			throw new RuntimeException(new ParseException(
-					"Falha ler string posicao " + s));
+			throw new RuntimeException(
+					"Falha ler string posicao " + s);
 		}
 
 	}
-
 }
