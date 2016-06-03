@@ -1,7 +1,6 @@
 package model;
 
 import static org.junit.Assert.assertEquals;
-import model.impl.ArestaPadrao;
 
 import org.junit.Test;
 
