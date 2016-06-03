@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Grafo ponderado="false" dirigido="false">
+	<Vertices>
+		<!-- relId indica o índice do vértice na matriz de adjacências-->
+		<Vertice relId="0" rotulo="A" posX="230" posY="81"/>
+		<Vertice relId="1" rotulo="B" posX="359" posY="81"/>
+		<Vertice relId="2" rotulo="C" posX="536" posY="84"/>
+		<Vertice relId="3" rotulo="D" posX="234" posY="193"/>
+		<Vertice relId="4" rotulo="E" posX="360" posY="187"/>
+		<Vertice relId="5" rotulo="F" posX="580" posY="197"/>
+	</Vertices>
+	<Arestas>
+		<Aresta idVertice1="0" idVertice2="3" peso="1.0"/>
+		<Aresta idVertice1="0" idVertice2="4" peso="1.0"/>
+		<Aresta idVertice1="0" idVertice2="5" peso="1.0"/>
+		<Aresta idVertice1="1" idVertice2="3" peso="1.0"/>
+		<Aresta idVertice1="1" idVertice2="4" peso="1.0"/>
+		<Aresta idVertice1="1" idVertice2="5" peso="1.0"/>
+		<Aresta idVertice1="2" idVertice2="3" peso="1.0"/>
+		<Aresta idVertice1="2" idVertice2="4" peso="1.0"/>
+		<Aresta idVertice1="2" idVertice2="5" peso="1.0"/>
+	</Arestas>
+</Grafo>

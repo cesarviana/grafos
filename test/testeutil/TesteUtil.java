@@ -15,7 +15,7 @@ public class TesteUtil {
 	return importaGrafo(new File("grafo.xml"));
     }
 
-    public static Grafo importaGrafo(File file) {
+	public static Grafo importaGrafo(File file) {
 	return new LeitorGraphMax().ler(file);
     }
 

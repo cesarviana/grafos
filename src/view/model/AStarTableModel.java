@@ -10,7 +10,7 @@ import astar.Passo;
 public class AStarTableModel extends AbstractTableModel implements TableModel {
 
 	private List<Passo> passos;
-	private String[] linhas = new String[] { "F", "G", "H", "Linha,Coluna" };
+	private String[] colunas = new String[] { "i", "F", "G", "H", "Linha,Coluna" };
 
 	public AStarTableModel(List<Passo> passos) {
 		this.passos = passos;
@@ -18,34 +18,32 @@ public class AStarTableModel extends AbstractTableModel implements TableModel {
 
 	@Override
 	public int getRowCount() {
-		return linhas.length;
+		return passos.size();
 	}
 
 	@Override
 	public int getColumnCount() {
-		return passos.size() + 1;
+		return colunas.length;
 	}
 	
 	@Override
 	public String getColumnName(int column) {
-		if(column==0) return "";
-		return String.valueOf(--column);
+		return colunas[column];
 	}
 
 	@Override
 	public Object getValueAt(int rowIndex, int columnIndex) {
-		if (columnIndex == 0) {
-			return linhas[rowIndex];
-		}
-		Passo passo = passos.get(--columnIndex);
-		switch (rowIndex) {
+		Passo passo = passos.get(rowIndex);
+		switch (columnIndex) {
 		case 0:
-			return passo.f();
+			return rowIndex;
 		case 1:
-			return passo.g;
+			return passo.f();
 		case 2:
-			return passo.h;
+			return passo.g;
 		case 3:
+			return passo.h;
+		case 4:
 			return passo.posicao;
 		}
 		return "";

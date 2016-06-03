@@ -1,7 +1,7 @@
 package caminho.conexidade;
 
-import caminho.conexidade.impl.VerificadorConexidadeImpl;
 import model.Grafo;
+import caminho.conexidade.impl.VerificadorConexidadeImpl;
 
 public class VerificadorConexidadeFacade {
 

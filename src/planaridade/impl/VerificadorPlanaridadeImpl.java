@@ -13,7 +13,6 @@ public class VerificadorPlanaridadeImpl implements VerificadorPlanaridade {
 		this.grafo = grafo;
 		int e = grafo.getArestas().size();
 		int v = grafo.getVertices().size();
-		// grafo.getArestas().forEach(System.out::println);
 		if (e <= 3 * v - 6) {
 			if (possuiClicloDe3()) {
 				return true;

@@ -1,6 +1,8 @@
 package view;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -23,18 +25,21 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-import planaridade.VerificadorPlanaridade;
-import planaridade.VerificadorPlanaridadeFactory;
-import astar.AStar;
-import astar.Mapa;
 import leitorxml.LeitorXmlFacade;
 import model.Grafo;
 import model.Vertice;
+import planaridade.VerificadorPlanaridade;
+import planaridade.VerificadorPlanaridadeFactory;
 import view.model.AStarTableModel;
 import view.model.DijkstraTableModel;
 import view.model.MainWindowModel;
+import astar.AStar;
+import astar.Mapa;
 import caminho.Caminho;
 import caminho.conexidade.VerificadorConexidadeFacade;
+import coloracao.Coloracao;
+import coloracao.ColoracaoFactory;
+import coloracao.ColoracaoListener;
 import dijkstra.Dijkstra;
 
 public class MainWindow {
@@ -47,16 +52,19 @@ public class MainWindow {
 	private final Action conectividadeAction = new ConectividadeAction();
 	private final Action actionDistancias = new DistanciasAction();
 	private final Action encontrarCaminho = new AStarCaminhoAction();
+	private final Action planaridadeAction = new PlanaridadeAction();
+	private final Action colorirAction = new ColorirAction();
 	private JLabel lblResultadoExecucao;
 	private final MainWindowModel viewModel = new MainWindowModel();
-	private final Action planaridadeAction = new PlanaridadeAction();
+	private Coloracao coloracao = ColoracaoFactory.cria();
 	private JTextField textFieldOrigem;
 	private JTextField textFieldDestino;
 	private JTextField textFieldOrigemDijkstra;
 	private JTable table;
+	private JLabel lblAcaoExecutada;
 	private JLabel lblLog;
 	private JTable tabelaAStar;
-	private JLabel lblAcaoExecutada;
+	private JPanelGrafo panelGrafoColoracao;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -189,7 +197,24 @@ public class MainWindow {
 
 		JButton button = new JButton(encontrarCaminho);
 		panel_7.add(button);
-
+		
+		JPanel panelColoracao = new JPanel();
+		tabbedPane.addTab("Coloração", null, panelColoracao, null);
+		panelColoracao.setLayout(new BorderLayout(0, 0));
+		
+		JPanel panel_9 = new JPanel();
+		panelColoracao.add(panel_9, BorderLayout.SOUTH);
+		
+		JButton btnColorir = new JButton(colorirAction);
+		panel_9.add(btnColorir);
+		
+		panelGrafoColoracao = new JPanelGrafo();
+		panelGrafoColoracao.setSize(new Dimension(800, 600));
+		panelGrafoColoracao.setBackground(Color.blue);
+		panelColoracao.add(panelGrafoColoracao, BorderLayout.NORTH);
+		JScrollPane scrollPane_2 = new JScrollPane(panelGrafoColoracao);
+		panelColoracao.add(scrollPane_2, BorderLayout.CENTER);
+		
 		JPanel panel_5 = new JPanel();
 		frame.getContentPane().add(panel_5, BorderLayout.SOUTH);
 
@@ -226,6 +251,7 @@ public class MainWindow {
 				executa(e);
 				informaAcaoExecutada();
 			} catch (Exception e2) {
+				e2.printStackTrace();
 				erro(e2.getMessage());
 			}
 		}
@@ -286,6 +312,7 @@ public class MainWindow {
 
 		private void importarEhMostrarLog() {
 			viewModel.setGrafo(LeitorXmlFacade.lerGrafoGraphMax());
+			panelGrafoColoracao.desenha(viewModel.getGrafo());
 			log("Grafo importado.\n "
 					+ viewModel.getGrafo().getVertices().toString());
 		}
@@ -422,4 +449,22 @@ public class MainWindow {
 			lblResultadoExecucao.setText(msg);
 		}
 	}
+	
+	private class ColorirAction extends PrecisadorGrafo {
+		public ColorirAction() {
+			putValue(NAME, "Colorir");
+			putValue(SHORT_DESCRIPTION, "Colorir matriz");
+		}
+		@Override
+		public void executa(ActionEvent e) {
+			coloracao.addListener(new ColoracaoListener() {
+				@Override
+				public void coloriu(Grafo grafo, Vertice vertice) {
+					panelGrafoColoracao.desenha( grafo );
+				}
+			});
+			coloracao.executaPasso(viewModel.getGrafo());
+		}
+	}
+	
 }

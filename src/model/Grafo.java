@@ -20,4 +20,6 @@ public interface Grafo {
 
 	public Collection<Aresta> getArestas();
 
+	void adicionarVertice(Vertice vertice);
+
 }

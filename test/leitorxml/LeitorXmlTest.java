@@ -41,18 +41,18 @@ public class LeitorXmlTest {
 		assert_arestas(grafo);
 	}
 
-	private void assert_qtd_vertices(Grafo grafo) {
-		Collection<Vertice> vertices = grafo.getVertices();
+	private void assert_qtd_vertices(Grafo grafo2) {
+		Collection<? extends Vertice> vertices = grafo2.getVertices();
 		assertEquals(7, vertices.size());
 	}
 
-	private void assert_qtd_adjacentes(Grafo grafo) {
-		Vertice vertice = grafo.getVertice("A");
+	private void assert_qtd_adjacentes(Grafo grafo2) {
+		Vertice vertice = grafo2.getVertice("A");
 		assertEquals(1, vertice.getAdjacentes().size());
 	}
 
-	private void assert_ordem_adjacentes(Grafo grafo) {
-		Vertice verticeB = grafo.getVertice("B");
+	private void assert_ordem_adjacentes(Grafo grafo2) {
+		Vertice verticeB = grafo2.getVertice("B");
 		Collection<Vertice> adjacentes = verticeB.getAdjacentes();
 		Iterator<Vertice> i = adjacentes.iterator();
 		assertEquals("D", i.next().getRotulo());
@@ -69,8 +69,8 @@ public class LeitorXmlTest {
 		assertEquals(1, vC.getArestaCom("B").getPeso(), 0);
 	}
 
-	private void assert_arestas(Grafo grafo) {
-		Collection<Aresta> arestas = grafo.getArestas();
+	private void assert_arestas(Grafo grafo2) {
+		Collection<Aresta> arestas = grafo2.getArestas();
 		List<String> arestasS = Arrays.asList(
 				"F - E",
 				"D - E", 

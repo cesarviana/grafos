@@ -22,12 +22,14 @@ public interface Vertice {
 
     public abstract void setPoxY(int poxY);
 
-    public abstract int getPoxY();
+    public abstract int getPosY();
 
     public abstract void setPoxX(int poxX);
 
-    public abstract int getPoxX();
+    public abstract int getPosX();
 
 	public Collection<Aresta> getArestas();
+
+	public int grau();
 
 }

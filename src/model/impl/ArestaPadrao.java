@@ -9,7 +9,7 @@ public class ArestaPadrao implements Aresta {
 	private Vertice verticeA = Vertice.NULO;
 	private Vertice verticeB = Vertice.NULO;
 
-	public ArestaPadrao(double peso) {
+	private ArestaPadrao(double peso) {
 		this.peso = peso;
 	}
 

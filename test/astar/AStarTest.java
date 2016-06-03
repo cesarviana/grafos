@@ -1,10 +1,16 @@
 package astar;
 
+
 import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
 import org.junit.Test;
+
+import astar.AStar;
+import astar.Mapa;
+import astar.MapaBuilder;
+import astar.Passo;
 
 public class AStarTest {
 
@@ -34,15 +40,9 @@ public class AStarTest {
 	}
 
 	private void assertCaminho(List<Passo> passos) {
-		String ss[] = new String[]{
-				"g=0;h=100;1,2",
-				"g=14;h=80;2,3",
-				"g=24;h=70;2,4",
-				"g=34;h=60;2,5",
-				"g=44;h=50;2,6",
-				"g=54;h=60;3,6",
-				"g=64;h=50;2,6"
-			};
+		String ss[] = new String[] { "g=0;h=100;1,2", "g=14;h=80;2,3",
+				"g=24;h=70;2,4", "g=34;h=60;2,5", "g=44;h=50;2,6",
+				"g=54;h=60;3,6", "g=64;h=50;2,6" };
 		for (int i = 0; i < ss.length; i++) {
 			assertEquals(ss[i], passos.get(i).toString());
 		}

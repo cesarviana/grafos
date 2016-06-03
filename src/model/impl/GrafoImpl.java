@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import factory.GrafoStaticFactory;
 import model.Aresta;
 import model.Grafo;
 import model.Vertice;
@@ -34,14 +35,20 @@ public class GrafoImpl implements Grafo {
 
 	@Override
 	public void adicionarVertice(int posX, int posY, String rotulo, int relId) {
-		Vertice vertice = new VerticePadrao(posX, posY, rotulo, relId);
+		Vertice vertice = GrafoStaticFactory.criaFactory().criaVertice(posX, posY, rotulo, relId);
 		verticesRotulos.put(rotulo, vertice);
 		verticesRelId.put(relId, vertice);
+	}
+	
+	@Override
+	public void adicionarVertice(Vertice vertice){
+		verticesRotulos.put(vertice.getRotulo(), vertice);
+		verticesRelId.put(vertice.getRelId(), vertice);
 	}
 
 	@Override
 	public void adicionarAresta(int idVertice1, int idVertice2, double peso) {
-		Aresta aresta = new ArestaPadrao(peso);
+		Aresta aresta = GrafoStaticFactory.criaFactory().criaAresta();
 		verticesRelId.get(idVertice1).addAresta(aresta);
 		ligaOutroVertice(idVertice2, aresta);
 	}

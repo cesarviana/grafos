@@ -16,7 +16,7 @@ public class VerticePadrao implements Vertice {
 	private int poxY;
 	private String rotulo;
 	private int relId;
-	private final Set<Aresta> arestas;
+	private Set<Aresta> arestas;
 
 	public VerticePadrao(String rotulo, int relId) {
 		this(0, 0, rotulo, relId);
@@ -69,7 +69,7 @@ public class VerticePadrao implements Vertice {
 	}
 
 	@Override
-	public int getPoxX() {
+	public int getPosX() {
 		return poxX;
 	}
 
@@ -79,7 +79,7 @@ public class VerticePadrao implements Vertice {
 	}
 
 	@Override
-	public int getPoxY() {
+	public int getPosY() {
 		return poxY;
 	}
 
@@ -108,4 +108,9 @@ public class VerticePadrao implements Vertice {
 		return arestas;
 	}
 
+	@Override
+	public int grau() {
+		return getAdjacentes().size();
+	}
+	
 }

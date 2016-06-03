@@ -45,14 +45,14 @@ public class VerticeNulo implements Vertice {
 	public void setPoxY(int poxY) {
 	}
 
-	public int getPoxY() {
+	public int getPosY() {
 		return 0;
 	}
 
 	public void setPoxX(int poxX) {
 	}
 
-	public int getPoxX() {
+	public int getPosX() {
 		return 0;
 	}
 
@@ -61,4 +61,9 @@ public class VerticeNulo implements Vertice {
 		return Collections.emptyList();
 	}
 
+	@Override
+	public int grau() {
+		return 0;
+	}
+	
 }

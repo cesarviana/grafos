@@ -9,13 +9,14 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import leitorxml.LeitorXml;
 import model.Grafo;
-import model.factory.ModelSimpleFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
+
+import factory.GrafoStaticFactory;
 
 public class LeitorGraphMax implements LeitorXml<Grafo> {
 
@@ -24,7 +25,7 @@ public class LeitorGraphMax implements LeitorXml<Grafo> {
 	@Override
 	public Grafo ler(File xml) {
 		this.xml = xml;
-		Grafo grafo = ModelSimpleFactory.factory().criaGrafo();
+		Grafo grafo = GrafoStaticFactory.criaFactory().criaGrafo();
 		try {
 			grafo = criaGrafo();
 		} catch (Exception ex) {
@@ -35,7 +36,7 @@ public class LeitorGraphMax implements LeitorXml<Grafo> {
 
 	protected Grafo criaGrafo() throws ParserConfigurationException,
 			SAXException, IOException {
-		Grafo grafo = ModelSimpleFactory.factory().criaGrafo();
+		Grafo grafo = GrafoStaticFactory.criaFactory().criaGrafo();
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
 		Document doc = dBuilder.parse(xml);
