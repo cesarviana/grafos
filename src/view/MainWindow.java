@@ -8,9 +8,11 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.swing.AbstractAction;
 import javax.swing.Action;
+import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -35,12 +37,17 @@ import view.model.DijkstraTableModel;
 import view.model.MainWindowModel;
 import astar.AStar;
 import astar.Mapa;
+import caixeiroviajante.CaixeiroViajante;
+import caixeiroviajante.CaixeiroViajanteListener;
 import caminho.Caminho;
 import caminho.conexidade.VerificadorConexidadeFacade;
 import coloracao.Coloracao;
 import coloracao.ColoracaoFactory;
 import coloracao.ColoracaoListener;
 import dijkstra.Dijkstra;
+
+import javax.swing.BoxLayout;
+import javax.swing.JList;
 
 public class MainWindow {
 
@@ -54,6 +61,7 @@ public class MainWindow {
 	private final Action encontrarCaminho = new AStarCaminhoAction();
 	private final Action planaridadeAction = new PlanaridadeAction();
 	private final Action colorirAction = new ColorirAction();
+	private final Action caixeiroViajanteAction = new CaixeiroViajanteAction();
 	private JLabel lblResultadoExecucao;
 	private final MainWindowModel viewModel = new MainWindowModel();
 	private Coloracao coloracao = ColoracaoFactory.cria();
@@ -65,6 +73,7 @@ public class MainWindow {
 	private JLabel lblLog;
 	private JTable tabelaAStar;
 	private JPanelGrafo panelGrafoColoracao;
+	private JList<String> listCaixeiroViajante;
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
@@ -85,7 +94,7 @@ public class MainWindow {
 
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 539, 309);
+		frame.setBounds(100, 100, 649, 460);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setLocationRelativeTo(null);
 
@@ -104,20 +113,10 @@ public class MainWindow {
 		JPanel panel_1 = new JPanel();
 		panelCentro.add(panel_1, BorderLayout.SOUTH);
 
-		JButton btnBfs = new JButton("BFS");
-		panel_1.add(btnBfs);
-		btnBfs.setAction(bfsAction);
-
-		JButton btnDfs = new JButton("DFS");
-		btnDfs.setAction(dfsAction);
-		panel_1.add(btnDfs);
-
-		JButton btnConectividade = new JButton("Conectividade");
-		btnConectividade.setAction(conectividadeAction);
-		panel_1.add(btnConectividade);
-
-		JButton btnPlanaridade = new JButton(planaridadeAction);
-		panel_1.add(btnPlanaridade);
+		panel_1.add(new JButton(bfsAction));
+		panel_1.add(new JButton(dfsAction));
+		panel_1.add(new JButton(conectividadeAction));
+		panel_1.add(new JButton(planaridadeAction));
 
 		JPanel panel_2 = new JPanel();
 		panelCentro.add(panel_2, BorderLayout.NORTH);
@@ -197,24 +196,44 @@ public class MainWindow {
 
 		JButton button = new JButton(encontrarCaminho);
 		panel_7.add(button);
-		
+
 		JPanel panelColoracao = new JPanel();
 		tabbedPane.addTab("Coloração", null, panelColoracao, null);
 		panelColoracao.setLayout(new BorderLayout(0, 0));
-		
+
 		JPanel panel_9 = new JPanel();
 		panelColoracao.add(panel_9, BorderLayout.SOUTH);
-		
+
 		JButton btnColorir = new JButton(colorirAction);
 		panel_9.add(btnColorir);
-		
+
 		panelGrafoColoracao = new JPanelGrafo();
 		panelGrafoColoracao.setSize(new Dimension(800, 600));
 		panelGrafoColoracao.setBackground(Color.blue);
 		panelColoracao.add(panelGrafoColoracao, BorderLayout.NORTH);
 		JScrollPane scrollPane_2 = new JScrollPane(panelGrafoColoracao);
 		panelColoracao.add(scrollPane_2, BorderLayout.CENTER);
-		
+
+		JPanel panelCaixeiroViajante = new JPanel();
+		tabbedPane.addTab("Caixeiro viajante", null, panelCaixeiroViajante,
+				null);
+		panelCaixeiroViajante.setLayout(new BoxLayout(panelCaixeiroViajante,
+				BoxLayout.Y_AXIS));
+
+		JPanel panel_11 = new JPanel();
+		panel_11.setBackground(new Color(102, 205, 170));
+		panelCaixeiroViajante.add(panel_11);
+		panel_11.setLayout(new BorderLayout(0, 0));
+
+		listCaixeiroViajante = new JList<String>();
+		JScrollPane scrollPane_3 = new JScrollPane(listCaixeiroViajante);
+		panel_11.add(scrollPane_3, BorderLayout.CENTER);
+
+		JPanel panel_10 = new JPanel();
+		panelCaixeiroViajante.add(panel_10);
+
+		panel_10.add(new JButton(caixeiroViajanteAction));
+
 		JPanel panel_5 = new JPanel();
 		frame.getContentPane().add(panel_5, BorderLayout.SOUTH);
 
@@ -348,6 +367,38 @@ public class MainWindow {
 
 	}
 
+	private class CaixeiroViajanteAction extends PrecisadorGrafo {
+		public CaixeiroViajanteAction() {
+			putValue(NAME, "Caixeiro Viajante");
+			putValue(SHORT_DESCRIPTION, "Executar caixeiro viajante");
+		}
+
+		@Override
+		public void executa(ActionEvent e) {
+			CaixeiroViajante caixeiroViajante = new CaixeiroViajante();
+			List<String> passos = new ArrayList<>();
+			caixeiroViajante.addListener(new CaixeiroViajanteListener() {
+				@Override
+				public void executouPasso(Grafo g, List<Vertice> vertices) {
+					passos.add(vertices.toString());
+				}
+
+				@Override
+				public void finalizou(Grafo g, List<Vertice> verticesCaminho) {
+					passos.add("Distância = "
+							+ caixeiroViajante
+									.calculaDistancia(verticesCaminho));
+					panelGrafoColoracao.desenha(g, verticesCaminho);
+				}
+			});
+			caixeiroViajante.calcula(viewModel.getGrafo());
+			DefaultListModel<String> model = new DefaultListModel<String>();
+			passos.forEach(p -> model.addElement(p));
+			listCaixeiroViajante.setModel(model);
+		}
+
+	}
+
 	private class ConectividadeAction extends PrecisadorGrafo {
 
 		public ConectividadeAction() {
@@ -449,22 +500,22 @@ public class MainWindow {
 			lblResultadoExecucao.setText(msg);
 		}
 	}
-	
+
 	private class ColorirAction extends PrecisadorGrafo {
 		public ColorirAction() {
 			putValue(NAME, "Colorir");
 			putValue(SHORT_DESCRIPTION, "Colorir matriz");
 		}
+
 		@Override
 		public void executa(ActionEvent e) {
 			coloracao.addListener(new ColoracaoListener() {
 				@Override
 				public void coloriu(Grafo grafo, Vertice vertice) {
-					panelGrafoColoracao.desenha( grafo );
+					panelGrafoColoracao.desenha(grafo);
 				}
 			});
 			coloracao.executaPasso(viewModel.getGrafo());
 		}
 	}
-	
 }

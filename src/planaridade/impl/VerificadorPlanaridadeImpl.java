@@ -11,13 +11,13 @@ public class VerificadorPlanaridadeImpl implements VerificadorPlanaridade {
 	@Override
 	public boolean isPlanar(Grafo grafo) {
 		this.grafo = grafo;
-		int e = grafo.getArestas().size();
-		int v = grafo.getVertices().size();
-		if (e <= 3 * v - 6) {
+		int qtdArestas = grafo.getArestas().size();
+		int qtdVertices = grafo.getVertices().size();
+		if (qtdArestas <= 3 * qtdVertices - 6) {
 			if (possuiClicloDe3()) {
 				return true;
 			} else {
-				return e <= 2 * v - 4;
+				return qtdArestas <= 2 * qtdVertices - 4;
 			}
 		}
 		return false;

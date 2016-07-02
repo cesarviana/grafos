@@ -28,6 +28,11 @@ public class GrafosFactoryImpl implements GrafosFactory {
 	public Aresta criaAresta() {
 		return new ArestaPadrao();
 	}
+	
+	@Override
+	public Aresta criaAresta(double peso) {
+		return new ArestaPadrao(peso);
+	}
 
 
 }

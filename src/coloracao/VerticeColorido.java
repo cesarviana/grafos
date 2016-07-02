@@ -45,10 +45,5 @@ public class VerticeColorido extends VerticePadrao {
 				.map(v -> (VerticeColorido) v)
 				.anyMatch(v -> v.getCor().equals(color));
 	}
-	
-	@Override
-	public String toString() {
-		return super.toString() + " " + getCor();
-	}
 
 }

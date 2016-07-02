@@ -12,4 +12,9 @@ public interface Aresta {
 
     public double getPeso();
 
+	Vertice getVerticeA();
+
+	Vertice getVerticeB();
+    
+
 }

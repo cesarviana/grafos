@@ -48,7 +48,7 @@ public class GrafoImpl implements Grafo {
 
 	@Override
 	public void adicionarAresta(int idVertice1, int idVertice2, double peso) {
-		Aresta aresta = GrafoStaticFactory.criaFactory().criaAresta();
+		Aresta aresta = GrafoStaticFactory.criaFactory().criaAresta(peso);
 		verticesRelId.get(idVertice1).addAresta(aresta);
 		ligaOutroVertice(idVertice2, aresta);
 	}
